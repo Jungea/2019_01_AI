@@ -1,5 +1,8 @@
 package search;
 
+import java.util.Collections;
+import java.util.LinkedList;
+
 /*
  * 작성자: 정은애
  * 작성일: 2019.05.13.
@@ -23,26 +26,31 @@ public class UndirectedListGraphTest {
 		System.out.print("간선 수 입력: ");
 		int e = scan.nextInt();
 		System.out.println();
-
 		// e개의 간선(정점 쌍)을 입력받아 그래프에 삽입
-		System.out.println(e + "개의 간선을 입력하세요 \n(각 간선은 정점 번호 2개를 whitespace로 구분하여 입력):");
-		for (int i = 0; i < e; i++) {
+		System.out.println(e + "개의 간선을 입력하세요 (v1, v2, w)");
+		int l = 0;
+		while (l < e) {
 			int v1 = scan.nextInt();
 			int v2 = scan.nextInt();
-			graph.addEdge(v1, v2);
+			int w = scan.nextInt();
+			if (graph.addEdge(v1, v2, w))
+				l++;
 		}
 
-		// 각 정점의 인접 정점들을 출력
-		System.out.println();
-		for (int i = 0; i < n; i++) {
-			System.out.print("정점 " + i + "에 인접한 정점 = ");
-			graph.printAdjacentVertices(i);
-			System.out.println();
-		}
+		// 각 정점의 인접 정점, 가중치들을 출력
+//		System.out.println();
+//		for (int i = 0; i < n; i++) {
+//			System.out.print("정점 " + i + "에 인접한 정점 = ");
+//			graph.printVW(i);
+//			System.out.println();
+//		}
+		System.out.println("[암벽 등반 탐색]");
+		graph.hillClimbing(0);
+		System.out.println("=============================================== \n");
+		
+		System.out.println("[A* 알고리즘]");
+		graph.aStartSearch(0);
+		System.out.println("=============================================== \n");
 
-		for (int i = 0; i < n; i++) {
-			System.out.print("\n" + i + ": ");
-			graph.breadthFirstSearch(i);
-		}
 	}
 }
