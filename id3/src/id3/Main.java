@@ -13,111 +13,136 @@ import java.util.TreeSet;
 
 public class Main {
 	static int id = 0;
-	static double idValue = 0;
+	static double idCalValue = 0;
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String[] title = new String[] { "¼ö¼ú", "°¡Á·", "Áı" };
-		String[][] value = new String[][] { { "±×·¸´Ù", "¾ø´Ù", "¾Æ´Ï´Ù" }, { "±×·¸´Ù", "¾ø´Ù", "¾Æ´Ï´Ù" }, { "¾Æ´Ï´Ù", "¾ø´Ù", "±×·¸´Ù" },
-				{ "¾Æ´Ï´Ù", "¾ø´Ù", "¾Æ´Ï´Ù" }, { "¾Æ´Ï´Ù", "ÀÖ´Ù", "±×·¸´Ù" } };
+		String[] title = new String[] 
+			{ "í°ìˆ˜ìˆ ", "ê°€ì¡±", "60ì„¸ì´ìƒ", "ì§‘" };
+		String[][] value = new String[][] { 
+			{ "ê·¸ë ‡ë‹¤", "ì—†ë‹¤", "ì•„ë‹ˆë‹¤", "ì•„ë‹ˆë‹¤" }, 
+			{ "ê·¸ë ‡ë‹¤", "ì—†ë‹¤", "ê·¸ë ‡ë‹¤", "ì•„ë‹ˆë‹¤" },
+			{ "ì•„ë‹ˆë‹¤", "ì—†ë‹¤", "ì•„ë‹ˆë‹¤", "ê·¸ë ‡ë‹¤" }, 
+			{ "ì•„ë‹ˆë‹¤", "ì—†ë‹¤", "ê·¸ë ‡ë‹¤", "ì•„ë‹ˆë‹¤" }, 
+			{ "ì•„ë‹ˆë‹¤", "ìˆë‹¤", "ê·¸ë ‡ë‹¤", "ê·¸ë ‡ë‹¤" } 
+		};
+		
 		int totalSize = value.length;
 		try (Scanner scan = new Scanner(System.in)) {
 			int opt;
-			int j = 1;
 
-			do {
-				System.out.println("I(?)¸¦ °í¸£½Ã¿À.");
+			while (true) {
+				System.out.println("I(?)ë¥¼ ê³ ë¥´ì‹œì˜¤.");
 				for (int i = 0; i < title.length; i++)
 					System.out.print((i + 1) + "." + title[i] + "  ");
-				System.out.print((title.length + 1) + ".Á¾·á : ");
-				id = scan.nextInt();
-				if (id == (title.length))
+				System.out.print((title.length + 1) + ".ì¢…ë£Œ : ");
+				id = scan.nextInt() - 1; // 2
+				if (id == title.length)
 					break;
 
-				String[][] idTable = cutColTable(id+1, value);
+				// I(?)ë¥¼ ìœ„í•œ Map ë§Œë“¤ê¸°
+				String[][] cutIdTable = cutColTable(id, value);
 				Map<String, Integer> idMap = new TreeMap<>();
-				for (int k = 0; k < idTable.length; k++) {
-					Integer i = idMap.get(idTable[k][0]);
+				for (int k = 0; k < cutIdTable.length; k++) {
+					Integer i = idMap.get(cutIdTable[k][0]);
 					if (i == null)
 						i = 0;
-					idMap.put(idTable[k][0], i + 1);
+					idMap.put(cutIdTable[k][0], i + 1);
 				}
-				
-				int[] idArr = convertInt(idMap.values(), totalSize);
-				System.out.println("I(" + title[id] + ") = " + rowCal(idArr));
+
+				// System.out.println(idMap);
+
+				int[] idValueArr = convertInt(idMap.values(), totalSize); // Mapì˜ valueê°’ì„ int[]ë¡œ
+				idCalValue = floor(rowCal(idValueArr));
+				System.out.println("I(" + title[id] + ") = " + idCalValue);
 				System.out.println();
 
-				
-				System.out.println("E(?)¸¦ °í¸£½Ã¿À.");
-				for (int i = 0; i < title.length; i++) {
-					if ((i + 1) != id) {
-						System.out.print(j + "." + title[i] + "  ");
-						j++;
+				//////////////////////////////////////////////
+
+				while (true) {
+					System.out.println("E(?)ë¥¼ ê³ ë¥´ì‹œì˜¤.");
+					for (int i = 0; i < title.length; i++)
+						System.out.print((i + 1) + "." + title[i] + "  ");
+					System.out.print((title.length + 1) + ".ì¢…ë£Œ : ");
+					opt = scan.nextInt() - 1;
+					if (opt == id) {
+						System.out.println("I(" + title[id] + ")ì™€ ê°™ì€ ì„ íƒì…ë‹ˆë‹¤. ë‹¤ì‹œê³ ë¥´ì‹œì˜¤.\n");
+						continue;
 					}
+					if (opt == title.length) {
+						System.out.println("\n=================================");
+						break;
+					}
+
+					String[] idKeyArr = idMap.keySet().toArray(new String[0]);
+					// System.out.println("idKeyArr" + Arrays.toString(idKeyArr));
+
+					String[][] cutEpTable = cutColTable(opt, value);
+					Set<String> eSet = new TreeSet<>();
+					for (int k = 0; k < value.length; k++)
+						eSet.add(cutEpTable[k][0]);
+					// System.out.println("bSet" + eSet);
+
+					String[] eArr = eSet.toArray(new String[0]);
+					// System.out.println("eArr" + Arrays.toString(eArr));
+
+					String[][] idEpTable = joinTable(cutEpTable, cutIdTable);
+
+					// System.out.println(Arrays.deepToString(idEpTable));
+
+					int[][] count = new int[eArr.length][idKeyArr.length + 1]; // í‘œ ìƒì„±
+					int colLast = count[0].length - 1; // ì—´ ë§ˆì§€ë§‰ ì¸ë±ìŠ¤
+					int row;
+					int col;
+					for (int k = 0; k < idEpTable.length; k++) {
+
+						row = Arrays.binarySearch(eArr, idEpTable[k][0]);
+						col = Arrays.binarySearch(idKeyArr, idEpTable[k][1]);
+
+						// System.out.println(row + " " + col);
+						count[row][col]++;
+						count[row][colLast]++;
+					}
+
+					// System.out.println("count" + Arrays.deepToString(count));
+
+					double sum = 0.0;
+					BigDecimal[] big = new BigDecimal[3];
+
+					for (int i = 0; i < idKeyArr.length; i++) {
+						if (count[i][colLast] == 0)
+							continue;
+						double fraction = (double) count[i][colLast] / idValueArr[idValueArr.length - 1];
+
+						big[0] = new BigDecimal(String.valueOf(fraction));
+						big[1] = new BigDecimal(String.valueOf(rowCal(cutRowTable(i, count))));
+						big[2] = new BigDecimal(String.valueOf(sum));
+
+						sum = big[0].multiply(big[1]).add(big[2]).doubleValue();
+						sum = floor(sum);
+					}
+
+					System.out.println("E(" + title[opt] + ") = " + sum);
+
+					BigDecimal big1 = new BigDecimal(String.valueOf(idCalValue));
+					BigDecimal big2 = new BigDecimal(String.valueOf(sum));
+					double gain = big1.subtract(big2).doubleValue();
+					System.out.println("Gain(" + title[opt] + ") = " + gain);
+					System.out.println("\n---------------------------------");
 				}
-				System.out.print(j + ".Á¾·á : ");
-				opt = scan.nextInt();
 
-				System.out.println();
-			} while (opt != j);
+			}
 
-			System.out.println("ÇÁ·Î±×·¥À» Á¾·áÇÕ´Ï´Ù.");
+			System.out.println("í”„ë¡œê·¸ë¨ì„ ì¢…ë£Œí•©ë‹ˆë‹¤.");
 		}
 
-		System.out.println();
-		Set<String> idSet = new TreeSet<>();
-		for (int k = 0; k < value.length; k++)
-			idSet.add(value[k][0]);
-
-		Set<String> bSet = new TreeSet<>();
-		for (int k = 0; k < value.length; k++)
-			bSet.add(value[k][1]);
-		System.out.println("idSet" + idSet);
-		System.out.println("bSet" + bSet);
-
-		String[] idArr = idSet.toArray(new String[0]);
-		System.out.println("idArr" + Arrays.toString(idArr));
-
-		String[] b = bSet.toArray(new String[0]);
-		System.out.println("b" + Arrays.toString(b));
-
-		int[][] count = new int[idArr.length + 1][b.length + 1]; // Ç¥ »ı¼º
-		int rowLast = count.length - 1; // Çà ¸¶Áö¸· ÀÎµ¦½º
-		int colLast = count[0].length - 1; // ¿­ ¸¶Áö¸· ÀÎµ¦½º
-		int row;
-		int col;
-		for (int k = 0; k < value.length; k++) {
-			row = Arrays.binarySearch(idArr, value[k][0]);
-			col = Arrays.binarySearch(b, value[k][1]);
-
-			count[row][col]++;
-			count[row][colLast]++;
-			count[rowLast][col]++;
-			count[rowLast][colLast]++;
-		}
-
-		System.out.println("count" + Arrays.deepToString(count));
-
-		double sum = 0.0;
-		BigDecimal[] big = new BigDecimal[3];
-
-		for (int i = 0; i < idArr.length; i++) {
-			if (count[i][colLast] == 0)
-				continue;
-			double fraction = (double) count[i][colLast] / count[rowLast][colLast];
-
-			big[0] = new BigDecimal(String.valueOf(fraction));
-			big[1] = new BigDecimal(String.valueOf(rowCal(cutRowTable(i, count))));
-			big[2] = new BigDecimal(String.valueOf(sum));
-
-			sum = big[0].multiply(big[1]).add(big[2]).doubleValue();
-			sum = (int) (sum * 1000) / 1000.0; // ¼Ò¼öÁ¡ 4¹øÂ° ÀÚ¸®ºÎÅÍ ¹ö¸²
-		}
-
-		System.out.println(sum);
 	}
 
-	//Collection<Integer> -> int[]
+	public static double floor(double d) {
+		return (int) (d * 100) / 100.0;
+	}
+
+	// Collection<Integer> -> int[]
 	public static int[] convertInt(Collection<Integer> integers, int totalSize) {
 		int[] ret = new int[integers.size() + 1];
 		Iterator<Integer> it = integers.iterator();
@@ -129,7 +154,7 @@ public class Main {
 		return ret;
 	}
 
-	//¿­ Àß¶ó ¹è¿­¸¸µé±â
+	// ì—´ ì˜ë¼ ë°°ì—´ë§Œë“¤ê¸°
 	static String[][] cutColTable(int col, String[][] value) {
 		String[][] table = new String[value.length][1];
 
@@ -139,7 +164,7 @@ public class Main {
 		return table;
 	}
 
-	//¹è¿­ 2°³ ÇÕÄ¡±â
+	// ë°°ì—´ 2ê°œ í•©ì¹˜ê¸°
 	static String[][] joinTable(String[][] t1, String[][] t2) {
 		String[][] table = new String[t1.length][2];
 
@@ -151,13 +176,13 @@ public class Main {
 		return table;
 	}
 
-	// ·Î±×°è»ê
+	// ë¡œê·¸ê³„ì‚°
 	// log2(2/5) => logCal(2, 2/5)
 	static double logCal(double base, double x) {
 		return Math.log10(x) / Math.log10(base);
 	}
 
-	// ¿­ Àß¶ó ¹è¿­ ¸¸µé±â
+	// ì—´ ì˜ë¼ ë°°ì—´ ë§Œë“¤ê¸°
 	static int[] cutRowTable(int row, int[][] value) {
 		int[] table = new int[value[0].length];
 
@@ -167,24 +192,25 @@ public class Main {
 		return table;
 	}
 
-	//Çà E(P) °è»ê Áß ÀÏºÎ
+	// static int[][] createCountTable()
+
+	// í–‰ E(P) ê³„ì‚° ì¤‘ ì¼ë¶€
 	static double rowCal(int[] count) {
 		double total = 0.0;
 		BigDecimal[] big = new BigDecimal[4];
-		for (int i = 0; i < count.length - 1; i++) { // ·Î±× °è»ê°ª ´õÇÏ±â(ÇÕÀÌ ÀÖ´Â ¿­ Àü±îÁö)
+		for (int i = 0; i < count.length - 1; i++) { // ë¡œê·¸ ê³„ì‚°ê°’ ë”í•˜ê¸°(í•©ì´ ìˆëŠ” ì—´ ì „ê¹Œì§€)
 			if (count[i] == 0)
 				continue;
-			double fraction = (double) count[i] / count[count.length - 1]; // ºĞ¼ö(2/5)
-			big[0] = new BigDecimal(String.valueOf(-fraction)); // ¾Õ ¼ö½Ä
+			double fraction = (double) count[i] / count[count.length - 1]; // ë¶„ìˆ˜(2/5)
+			big[0] = new BigDecimal(String.valueOf(-fraction)); // ì• ìˆ˜ì‹
 
-			big[1] = new BigDecimal(String.valueOf(logCal(2, fraction))); // µÚ ¼ö½Ä
+			big[1] = new BigDecimal(String.valueOf(logCal(2, fraction))); // ë’¤ ìˆ˜ì‹
 
 			double result = big[0].multiply(big[1]).doubleValue();
-			double floorResult = (int) (result * 1000) / 1000.0; // ¼Ò¼öÁ¡ 4¹øÂ° ÀÚ¸®ºÎÅÍ ¹ö¸²
 
 			big[2] = new BigDecimal(String.valueOf(total));
-			big[3] = new BigDecimal(String.valueOf(floorResult));
-			total = big[2].add(big[3]).doubleValue(); // row °è»ê °á°ú
+			big[3] = new BigDecimal(String.valueOf(result));
+			total = big[2].add(big[3]).doubleValue(); // row ê³„ì‚° ê²°ê³¼
 
 			// System.out.println("----------------------------");
 
@@ -199,20 +225,20 @@ public class Main {
 	static double rowCal2(int row, int[][] count) {
 		double total = 0.0;
 		BigDecimal[] big = new BigDecimal[4];
-		for (int i = 0; i < count[0].length - 1; i++) { // ·Î±× °è»ê°ª ´õÇÏ±â(ÇÕÀÌ ÀÖ´Â ¿­ Àü±îÁö)
+		for (int i = 0; i < count[0].length - 1; i++) { // ë¡œê·¸ ê³„ì‚°ê°’ ë”í•˜ê¸°(í•©ì´ ìˆëŠ” ì—´ ì „ê¹Œì§€)
 			if (count[row][i] == 0)
 				continue;
-			double fraction = (double) count[row][i] / count[row][count.length - 1]; // ºĞ¼ö(2/5)
-			big[0] = new BigDecimal(String.valueOf(-fraction)); // ¾Õ ¼ö½Ä
+			double fraction = (double) count[row][i] / count[row][count.length - 1]; // ë¶„ìˆ˜(2/5)
+			big[0] = new BigDecimal(String.valueOf(-fraction)); // ì• ìˆ˜ì‹
 
-			big[1] = new BigDecimal(String.valueOf(logCal(2, fraction))); // µÚ ¼ö½Ä
+			big[1] = new BigDecimal(String.valueOf(logCal(2, fraction))); // ë’¤ ìˆ˜ì‹
 
 			double result = big[0].multiply(big[1]).doubleValue();
-			double floorResult = (int) (result * 1000) / 1000.0; // ¼Ò¼öÁ¡ 4¹øÂ° ÀÚ¸®ºÎÅÍ ¹ö¸²
+			double floorResult = (int) (result * 1000) / 1000.0; // ì†Œìˆ˜ì  4ë²ˆì§¸ ìë¦¬ë¶€í„° ë²„ë¦¼
 
 			big[2] = new BigDecimal(String.valueOf(total));
 			big[3] = new BigDecimal(String.valueOf(floorResult));
-			total = big[2].add(big[3]).doubleValue(); // row °è»ê °á°ú
+			total = big[2].add(big[3]).doubleValue(); // row ê³„ì‚° ê²°ê³¼
 
 			// System.out.println("----------------------------");
 
