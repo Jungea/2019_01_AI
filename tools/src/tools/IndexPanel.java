@@ -1,10 +1,10 @@
 package tools;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -12,34 +12,67 @@ import javax.swing.border.LineBorder;
 
 public class IndexPanel extends JPanel {
 
-	JLabel[] label = new JLabel[4];
 	LineBorder lb = new LineBorder(Color.RED, 3);
 
-	public IndexPanel() {
+	public IndexPanel(MainFrame mainFrame) {
 		setLayout(null);
-
-		JPanel bPanel = new JPanel();
-		bPanel.setLayout(new GridLayout(6, 1));
-		label[0] = new JLabel("목차", 0);
-		label[1] = new JLabel("탐색            ........................................1");
-		label[2] = new JLabel("ID3     ........................................2");
-		label[3] = new JLabel("단층 퍼셉트론........................................3");
-		bPanel.add(label[0]);
-		bPanel.add(label[1]);
-		bPanel.add(label[2]);
-		bPanel.add(label[3]);
-		bPanel.add(new JLabel("개발 중..."));
-		bPanel.add(new JLabel());
-		
-		label[0].setFont(new Font("굴림", Font.BOLD, 25));
-		label[1].setFont(new Font("굴림", Font.BOLD, 25));
-		label[2].setFont(new Font("굴림", Font.BOLD, 25));
-		label[3].setFont(new Font("굴림", Font.BOLD, 25));
-		
-		bPanel.setOpaque(false);
-		//bPanel.setBorder(lb);
 		setBackground(Color.WHITE);
-		bPanel.setBounds(50, 0, 600, 800);
-		add(bPanel);
+
+		ImageIcon title_ImgIcon = new ImageIcon("image/index_title.png");
+		JLabel title_img = new JLabel(title_ImgIcon);
+		title_img.setBounds(45, 10, 540, 230);
+		add(title_img);
+
+		ImageIcon chap1_ImgIcon = new ImageIcon("image/index_chap1.png");
+		JButton chap1_img = new JButton(chap1_ImgIcon);
+		chap1_img.setBorderPainted(false);
+		chap1_img.setContentAreaFilled(false);
+		chap1_img.setFocusPainted(false);
+		chap1_img.setBounds(45, 280, 540, 57);
+		add(chap1_img);
+		chap1_img.addActionListener(new ActionListener() {
+			MainFrame mf = mainFrame;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				mainFrame.changeRoom(new Chap1Panel(mf));
+			}
+		});
+
+		ImageIcon chap2_ImgIcon = new ImageIcon("image/index_chap2.png");
+		JButton chap2_img = new JButton(chap2_ImgIcon);
+		chap2_img.setBorderPainted(false);
+		chap2_img.setContentAreaFilled(false);
+		chap2_img.setFocusPainted(false);
+		chap2_img.setBounds(45, 430, 540, 57);
+		add(chap2_img);
+		chap2_img.addActionListener(new ActionListener() {
+			MainFrame mf = mainFrame;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				mainFrame.changeRoom(new Chap2Panel(mf));
+			}
+		});
+
+		ImageIcon chap3_ImgIcon = new ImageIcon("image/index_chap3.png");
+		JButton chap3_img = new JButton(chap3_ImgIcon);
+		chap3_img.setBorderPainted(false);
+		chap3_img.setContentAreaFilled(false);
+		chap3_img.setFocusPainted(false);
+		chap3_img.setBounds(45, 580, 540, 57);
+		add(chap3_img);
+		chap3_img.addActionListener(new ActionListener() {
+			MainFrame mf = mainFrame;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				mainFrame.changeRoom(new Chap3Panel(mf));
+			}
+		});
+
 	}
 }

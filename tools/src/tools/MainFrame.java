@@ -16,7 +16,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class MainFrame extends JFrame {
-	JButton nextButton = new JButton("▶");
 
 	public void frameLocation() {
 		Dimension screen1 = Toolkit.getDefaultToolkit().getScreenSize();
@@ -45,21 +44,24 @@ public class MainFrame extends JFrame {
 		add(background);
 
 		background.setLayout(new BorderLayout());
+
+		ImageIcon next_ImgIcon = new ImageIcon("image/next.png");
+		JButton nextButton = new JButton(next_ImgIcon);
 		nextButton.setBorderPainted(false);
 		nextButton.setContentAreaFilled(false);
+		nextButton.setFocusPainted(false);
 		nextButton.setFont(new Font("Dialog", Font.BOLD, 25));
 		nextButton.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				changeRoom(new IndexPanel());
+				changeRoom(new IndexPanel(MainFrame.this));
 			}
 		});
 
 		background.add("East", nextButton);
-		
-		changeRoom(new IndexPanel());
+
+		changeRoom(new Chap1Panel(this));
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
