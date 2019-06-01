@@ -44,7 +44,7 @@ public class UndirectedListGraphTest {
 //			graph.printVW(i);
 //			System.out.println();
 //		}
-		System.out.println("[암벽 등반 탐색]");
+		System.out.println("[언덕 등반 탐색]");
 		graph.hillClimbing(0);
 		System.out.println("=============================================== \n");
 		

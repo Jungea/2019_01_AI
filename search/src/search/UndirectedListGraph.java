@@ -8,8 +8,6 @@ public class UndirectedListGraph {
 	private Node[] list;
 	private int n; // 정점 수
 	LinkedList<Integer> route;
-	private boolean[] visited;
-	private Queue<Integer> q;
 
 	private class Node {
 		int vertex;
