@@ -3,7 +3,6 @@ package tools.chap1;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -24,8 +23,8 @@ public class Chap1Panel extends JPanel {
 
 	JTextField vNumTF = new JTextField();
 	JTextField eNumTF = new JTextField();
-	static JTextArea VWTA = new JTextArea();
-	static JScrollPane VWScrollPane = new JScrollPane(VWTA);
+	static JTextArea VWTA;
+	static JScrollPane VWScrollPane;
 
 	public Chap1Panel(MainFrame mainFrame) {
 		// TODO Auto-generated constructor stub
@@ -114,6 +113,8 @@ public class Chap1Panel extends JPanel {
 		JLabel VWLabel = new JLabel("간선 입력 \n(V1, V2, W)");
 		VWLabel.setBounds(50, 410, 150, 50);
 		inputPanel.add(VWLabel);
+		VWTA = new JTextArea();
+		VWScrollPane = new JScrollPane(VWTA);
 		VWScrollPane.setBounds(200, 410, 250, 100);
 		inputPanel.add(VWScrollPane);
 
@@ -184,13 +185,13 @@ public class Chap1Panel extends JPanel {
 				int v2 = Integer.parseInt(ls[l++]);
 				int w = Integer.parseInt(ls[l++]);
 				if (!graph.addEdge(v1, v2, w)) { // 잘못된 삽입
-					Chap1Panel.VWTA.setBorder(errorLB);
+					Chap1Panel.VWScrollPane.setBorder(errorLB);
 					return null;
 				}
 			}
 		} catch (ArrayIndexOutOfBoundsException exception) { // 잘못된 입력
 			// TODO: handle exception
-			Chap1Panel.VWScrollPane.setBorder(errorLB);
+			Chap1Panel.VWTA.setBorder(errorLB);
 			return null;
 		}
 

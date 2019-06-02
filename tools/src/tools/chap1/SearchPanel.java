@@ -110,7 +110,7 @@ public class SearchPanel extends JPanel {
 				}
 			});
 		}
-		// A* 탐색 이동 버튼
+		
 		JButton resetButton = new JButton("다시 입력");
 		resetButton.setBounds(350, 710, 200, 59);
 		resetButton.setFocusPainted(false);
