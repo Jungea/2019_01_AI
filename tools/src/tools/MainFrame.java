@@ -15,6 +15,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import tools.chap1.Chap1Panel;
+
 public class MainFrame extends JFrame {
 
 	public void frameLocation() {
@@ -72,7 +74,6 @@ public class MainFrame extends JFrame {
 		setResizable(false);
 		getContentPane().removeAll();
 		getContentPane().add(panel);
-		frameLocation();
 		revalidate();
 		repaint();
 

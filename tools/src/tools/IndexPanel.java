@@ -10,6 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
+import tools.chap1.Chap1Panel;
+
 public class IndexPanel extends JPanel {
 
 	LineBorder lb = new LineBorder(Color.RED, 3);
