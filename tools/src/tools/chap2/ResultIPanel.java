@@ -1,21 +1,30 @@
-package tools;
+package tools.chap2;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class Chap3Panel extends JPanel {
-	public Chap3Panel(MainFrame mainFrame) {
+import tools.IndexPanel;
+import tools.MainFrame;
+
+public class ResultIPanel extends JPanel {
+
+	public ResultIPanel(MainFrame mainFrame, int check, String[] header, String[][] context) {
 		// TODO Auto-generated constructor stub
+
 		setLayout(null);
 		setBackground(Color.WHITE);
 
-		ImageIcon home_ImgIcon = new ImageIcon("image/home.png");
-		JButton home_img = new JButton(home_ImgIcon);
+		// 처음으로 이동하는 버튼
+		JButton home_img = new JButton(new ImageIcon("image/home.png"));
 		home_img.setBorderPainted(false);
 		home_img.setContentAreaFilled(false);
 		home_img.setFocusPainted(false);
@@ -31,13 +40,11 @@ public class Chap3Panel extends JPanel {
 		home_img.setBounds(10, 10, 45, 29);
 		add(home_img);
 
-		ImageIcon chap3_ImgIcon = new ImageIcon("image/index_chap3.png");
-		JButton chap3_img = new JButton(chap3_ImgIcon);
-		chap3_img.setBorderPainted(false);
-		chap3_img.setContentAreaFilled(false);
-		chap3_img.setFocusPainted(false);
-		chap3_img.setBounds(45, 50, 540, 57);
-		add(chap3_img);
-	}
+		JLabel iTitle_img = new JLabel(new ImageIcon("image/ICal.png"));
+		iTitle_img.setBounds(45, 50, 540, 86);
+		add(iTitle_img);
+		
+		
 
+	}
 }

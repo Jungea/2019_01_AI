@@ -18,7 +18,7 @@ import tools.MainFrame;
 
 public class Chap1Panel extends JPanel {
 
-	static LineBorder lb = new LineBorder(Color.BLACK, 1);
+	static LineBorder lb = new LineBorder(Color.BLUE, 1);
 	static LineBorder errorLB = new LineBorder(Color.RED, 3);
 
 	JTextField vNumTF = new JTextField();

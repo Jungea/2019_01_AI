@@ -1,13 +1,18 @@
 package tools.chap2;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.LineBorder;
@@ -19,6 +24,12 @@ public class Chap2Panel extends JPanel {
 
 	static LineBorder lb = new LineBorder(Color.BLACK, 1);
 	static LineBorder whitelb = new LineBorder(Color.WHITE, 1);
+	JPanel tablePanel = new JPanel();
+	JTable table;
+	String[] header;
+	String[][] context;
+	JRadioButton[] radioButton;
+	int check = 0;
 
 	public Chap2Panel(MainFrame mainFrame) {
 		// TODO Auto-generated constructor stub
@@ -79,33 +90,80 @@ public class Chap2Panel extends JPanel {
 		ex_Button.setBounds(45, 300, 150, 30);
 		ex_Button.setFocusPainted(false);
 		add(ex_Button);
+		ex_Button.addActionListener(new ActionListener() {
 
-		JButton edit_Button = new JButton("수정");
-		edit_Button.setBounds(195, 300, 150, 30);
-		edit_Button.setFocusPainted(false);
-		add(edit_Button);
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				header = new String[] { "no", "큰수술", "가족", "60세이상", "집" };
+				context = new String[][] { { "1", "그렇다", "없다", "아니다", "아니다" }, { "2", "그렇다", "없다", "그렇다", "아니다" },
+						{ "3", "아니다", "없다", "아니다", "그렇다" }, { "4", "아니다", "없다", "그렇다", "아니다" },
+						{ "5", "아니다", "있다", "그렇다", "그렇다" } };
 
-		// 표 생성
-		String[] header = new String[] { "no", "큰수술", "가족", "60세이상", "집" };
-		String[][] context = new String[][] { { "1", "그렇다", "없다", "아니다", "아니다" }, { "2", "그렇다", "없다", "그렇다", "아니다" },
-				{ "3", "아니다", "없다", "아니다", "그렇다" }, { "4", "아니다", "없다", "그렇다", "아니다" },
-				{ "5", "아니다", "있다", "그렇다", "그렇다" } };
-		JTable table = new JTable(context, header);
-		JScrollPane tableSP = new JScrollPane(table);
-		tableSP.setOpaque(false);
-		tableSP.getViewport().setOpaque(false);
-		table.setRowHeight(30);
-		table.getColumnModel().getColumn(0).setPreferredWidth(10);
-		table.getTableHeader().setPreferredSize(new Dimension(30, 30));
+				table = new JTable(context, header);
+				// 표 생성
+				JScrollPane tableSP = new JScrollPane(table);
+				tableSP.setOpaque(false);
+				tableSP.getViewport().setOpaque(false);
+				table.setRowHeight(30);
+				table.getColumnModel().getColumn(0).setPreferredWidth(10);
+				table.getTableHeader().setPreferredSize(new Dimension(30, 30));
 
-		table.setFocusable(false); // 열
-		table.setRowSelectionAllowed(false); // 행
-		table.getTableHeader().setReorderingAllowed(false); // 이동불가
-		table.getTableHeader().setResizingAllowed(false); // 크기 조절 불가
+				table.setFocusable(false); // 열
+				table.setRowSelectionAllowed(false); // 행
+				table.getTableHeader().setReorderingAllowed(false); // 이동불가
+				table.getTableHeader().setResizingAllowed(false); // 크기 조절 불가
 
-		tableSP.setBounds(45, 350, 540, 250);
-		add(tableSP);
+				tablePanel.add(tableSP);
 
+				ButtonGroup group = new ButtonGroup();
+				radioButton = new JRadioButton[header.length];
+				int x = 95;
+				for (int i = 1; i < radioButton.length; i++) {
+					radioButton[i] = new JRadioButton(header[i]);
+					group.add(radioButton[i]);
+					radioButton[i].setBackground(Color.WHITE);
+					radioButton[i].setBounds(x, 560, 125, 100);
+					x += 130;
+					radioButton[i].setFont(new Font("돋움", Font.BOLD, 15));
+					add(radioButton[i]);
+				}
+				radioButton[1].setSelected(true);
+
+				JButton calStart = new JButton("계산 시작");
+				calStart.setBounds(385, 680, 200, 60);
+				calStart.addActionListener(new ActionListener() {
+					MainFrame mf = mainFrame;
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						check = checkRadio(radioButton);
+						mainFrame.changeRoom(new ResultIPanel(mf, check, header, context));
+					}
+				});
+
+				add(calStart);
+
+				revalidate();
+				repaint();
+			}
+
+		});
+
+		tablePanel.setLayout(new BorderLayout());
+		tablePanel.setBackground(Color.white);
+		tablePanel.setBounds(45, 350, 540, 200);
+		tablePanel.setBorder(lb);
+		add(tablePanel);
+
+	}
+
+	public static int checkRadio(JRadioButton[] radioButton) {
+		for (int i = 1; i < radioButton.length; i++)
+			if (radioButton[i].isSelected())
+				return i;
+		return 0;
 	}
 
 }

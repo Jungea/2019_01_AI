@@ -12,6 +12,7 @@ import javax.swing.border.LineBorder;
 
 import tools.chap1.Chap1Panel;
 import tools.chap2.Chap2Panel;
+import tools.chap3.Chap3Panel;
 
 public class IndexPanel extends JPanel {
 
