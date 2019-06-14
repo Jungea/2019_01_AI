@@ -158,25 +158,6 @@ class BTreePanel extends JPanel {
 	int index = -1;
 
 	public BTreePanel() {
-		tree = new MyBTree(new MyNode(1, 0, 0));
-		tree.add(new MyNode(4, 5, 6));
-		tree.add(new MyNode(7, 8, 9));
-		tree.add(new MyNode(10, 11, 12));
-
-		tree.print();
-		tree.moveTemp(0);
-
-		tree.add(new MyNode(7, 8, 9));
-		tree.add(new MyNode(10, 11, 12));
-
-		tree.print();
-
-		tree.moveTemp(1);
-
-		tree.add(new MyNode(7, 8, 9));
-		tree.add(new MyNode(10, 11, 12));
-
-		tree.print();
 	}
 
 	@Override

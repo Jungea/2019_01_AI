@@ -1,9 +1,12 @@
 package tools.chap2;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Scrollbar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -13,6 +16,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 import tools.IndexPanel;
@@ -59,6 +66,27 @@ public class ResultIPanel extends JPanel {
 		showPanel.setBounds(45, 160, 540, 530);
 		showPanel.setBorder(lb);
 		add(showPanel);
+
+		ID3 id3 = new ID3(check, header, context);
+
+		Integer[] b = (Integer[]) id3.idMap.values().toArray(new Integer[id3.idMap.values().size()]);
+		Integer[][] bb = new Integer[1][b.length];
+		bb[0] = b;
+		String[] a = (String[]) id3.idMap.keySet().toArray(new String[id3.idMap.keySet().size()]);
+
+		JTable tt = new JTable(bb, a);
+		JScrollPane tableSP = new JScrollPane(tt, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		tableSP.setBounds(20, 20, 300, 60);
+		tt.setRowHeight(30);
+		tt.getTableHeader().setPreferredSize(new Dimension(30, 30));
+		showPanel.add(tableSP);
+
+		JTextArea tf = new JTextArea();
+		tf.setBounds(20, 20, 500, 100);
+		tf.setBorder(lb);
+		showPanel.add(tf);
+		tf.setText(id3.id + "\n" + id3.idMap.values() + "\n");
 
 	}
 
