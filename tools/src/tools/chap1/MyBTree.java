@@ -16,9 +16,10 @@ public class MyBTree {
 	public void add(MyNode n) {
 		temp.child.add(n);
 	}
+
 	public void setGHValue(int i, int data1, int data2) {
-			temp.child.get(i).data[1] = data1;
-			temp.child.get(i).data[2] = data2;
+		temp.child.get(i).data[1] = data1;
+		temp.child.get(i).data[2] = data2;
 	}
 
 	public void setValue(int dataIndex, ArrayList<Integer> fList) {

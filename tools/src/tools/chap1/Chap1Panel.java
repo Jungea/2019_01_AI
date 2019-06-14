@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -22,7 +23,9 @@ public class Chap1Panel extends JPanel {
 	static LineBorder errorLB = new LineBorder(Color.RED, 3);
 
 	JTextField vNumTF = new JTextField();
+	JTextField startTF = new JTextField();
 	JTextField eNumTF = new JTextField();
+	JCheckBox returnCB = new JCheckBox("시작정점 도착", true);
 	static JTextArea VWTA;
 	static JScrollPane VWScrollPane;
 
@@ -64,7 +67,9 @@ public class Chap1Panel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				vNumTF.setText("4");
+				returnCB.setSelected(true);
 				eNumTF.setText("6");
+				startTF.setText("0");
 				VWTA.setText("0 1 1\n0 2 5\n0 3 4\n1 2 2\n1 3 6\n2 3 3");
 			}
 		});
@@ -80,7 +85,9 @@ public class Chap1Panel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				vNumTF.setText("");
+				returnCB.setSelected(true);
 				eNumTF.setText("");
+				startTF.setText("");
 				VWTA.setText("");
 			}
 		});
@@ -97,17 +104,27 @@ public class Chap1Panel extends JPanel {
 
 		// 정점수 레이블과 텍스트 필드
 		JLabel vNumLabel = new JLabel("정점 수", 0);
-		vNumLabel.setBounds(100, 270, 100, 50);
+		vNumLabel.setBounds(50, 270, 100, 50);
 		inputPanel.add(vNumLabel);
-		vNumTF.setBounds(200, 270, 200, 50);
+		vNumTF.setBounds(150, 270, 100, 50);
 		inputPanel.add(vNumTF);
+
+		returnCB.setBounds(330, 270, 150, 50);
+		returnCB.setBackground(Color.WHITE);
+		inputPanel.add(returnCB);
 
 		// 간선수 레이블과 텍스트 필드
 		JLabel eNumLabel = new JLabel("간선 수", 0);
-		eNumLabel.setBounds(100, 340, 100, 50);
+		eNumLabel.setBounds(50, 340, 100, 50);
 		inputPanel.add(eNumLabel);
-		eNumTF.setBounds(200, 340, 200, 50);
+		eNumTF.setBounds(150, 340, 100, 50);
 		inputPanel.add(eNumTF);
+
+		JLabel startLabel = new JLabel("시작 노드", 0);
+		startLabel.setBounds(250, 340, 100, 50);
+		inputPanel.add(startLabel);
+		startTF.setBounds(350, 340, 100, 50);
+		inputPanel.add(startTF);
 
 		// 간선 레이블과 텍스트 에리어
 		JLabel VWLabel = new JLabel("간선 입력 \n(V1, V2, W)");
@@ -139,7 +156,8 @@ public class Chap1Panel extends JPanel {
 				if (vNumTF.getText().length() != 0 && eNumTF.getText().length() != 0 && VWTA.getText().length() != 0) {
 					UndirectedListGraph graph = makeGraph(vNumTF.getText(), eNumTF.getText(), VWTA.getText());
 					if (graph != null)
-						mainFrame.changeRoom(new SearchPanel(mf, 1, graph));
+						mainFrame.changeRoom(new SearchPanel(mf, 1, Integer.parseInt(startTF.getText()),
+								returnCB.isSelected(), graph));
 				}
 			}
 		});
@@ -160,7 +178,8 @@ public class Chap1Panel extends JPanel {
 				if (vNumTF.getText().length() != 0 && eNumTF.getText().length() != 0 && VWTA.getText().length() != 0) {
 					UndirectedListGraph graph = makeGraph(vNumTF.getText(), eNumTF.getText(), VWTA.getText());
 					if (graph != null)
-						mainFrame.changeRoom(new SearchPanel(mf, 2, graph));
+						mainFrame.changeRoom(new SearchPanel(mf, 2, Integer.parseInt(startTF.getText()),
+								returnCB.isSelected(), graph));
 				}
 			}
 		});

@@ -17,6 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.LineBorder;
 
 import tools.IndexPanel;
@@ -26,7 +27,7 @@ public class SearchPanel extends JPanel {
 
 	LineBorder lb = new LineBorder(Color.BLUE, 1);
 
-	public SearchPanel(MainFrame mainFrame, int num, UndirectedListGraph graph) {
+	public SearchPanel(MainFrame mainFrame, int num, int start, boolean rz, UndirectedListGraph graph) {
 		// TODO Auto-generated constructor stub
 		setLayout(null);
 		setBackground(Color.WHITE);
@@ -58,28 +59,37 @@ public class SearchPanel extends JPanel {
 		}
 
 		JLabel title_img = new JLabel(icon);
-
 		title_img.setBounds(45, 50, 540, 86);
 		add(title_img);
 
 		JPanel solvingPanel = new JPanel();
 		solvingPanel.setLayout(null);
+		solvingPanel.setBackground(Color.WHITE);
 		solvingPanel.setBorder(lb);
 		solvingPanel.setBounds(45, 160, 540, 450);
 		add(solvingPanel);
 
 		BTreePanel treePanel = new BTreePanel();
-		treePanel.setBounds(50, 5, 350, 300);
-//		treePanel.setBorder(lb);
-		solvingPanel.add(treePanel);
+		JScrollPane treeSP = new JScrollPane(treePanel);
+		treeSP.setBounds(50, 10, 450, 370);
+		treePanel.setBackground(Color.WHITE);
+		treeSP.setBorder(null);
+		solvingPanel.add(treeSP);
 
+		String searchResult;
 		if (num == 1)
-			graph.hillClimbing(0);
+			searchResult = graph.hillClimbing(rz, start);
 		else
-			graph.aStartSearch(0);
+			searchResult = graph.aStartSearch(rz, start);
 
 		treePanel.tree = graph.tree;
 		treePanel.capture();
+
+		JLabel resultLabel = new JLabel(searchResult);
+		resultLabel.setFont(new Font("돋움", Font.BOLD, 20));
+		resultLabel.setBounds(50, 365, 300, 100);
+		solvingPanel.add(resultLabel);
+
 		if (num == 1) {
 			// A* 탐색 이동 버튼
 			JButton aStarButton = new JButton(new ImageIcon("image/astar.png"));
@@ -94,7 +104,7 @@ public class SearchPanel extends JPanel {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
-					mainFrame.changeRoom(new SearchPanel(mf, 2, graph));
+					mainFrame.changeRoom(new SearchPanel(mf, 2, start, rz, graph));
 
 				}
 			});
@@ -113,7 +123,7 @@ public class SearchPanel extends JPanel {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
-					mainFrame.changeRoom(new SearchPanel(mf, 1, graph));
+					mainFrame.changeRoom(new SearchPanel(mf, 1, start, rz, graph));
 
 				}
 			});
