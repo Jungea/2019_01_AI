@@ -9,6 +9,7 @@ public class UndirectedListGraph {
 	private int n; // 정점 수
 	LinkedList<Integer> route;
 	StringBuilder sb;
+	MyBTree tree;
 
 	private class Node {
 		int vertex;
@@ -106,10 +107,11 @@ public class UndirectedListGraph {
 		}
 	}
 
-	// 암벽 등반 탐색
+	// 언덕 등반 탐색
 	public String hillClimbing(int start) {
 		sb = new StringBuilder();
 		route = new LinkedList<>(); // 경로
+		tree = new MyBTree(new MyNode(start, 0, 0));
 		LinkedList<Integer> resultList = hill(start, start, route);
 		resultList.add(start);
 
@@ -122,7 +124,7 @@ public class UndirectedListGraph {
 		return sb.toString();
 	}
 
-	// 암벽 등반 탐색 재귀문 (시작정점, 현재정점, 지나온 경로)
+	// 언덕 등반 탐색 재귀문 (시작정점, 현재정점, 지나온 경로)
 	public LinkedList<Integer> hill(int start, int now, LinkedList<Integer> route) {
 		route.add(now);
 		sb.append(now + " " + route + "\n");
@@ -130,6 +132,8 @@ public class UndirectedListGraph {
 		LinkedList<Integer> vs = getVertices(now);
 		vs.removeAll(route);
 		sb.append("vs " + vs + "\n"); // 앞으로 갈 정점
+		for (Integer i : vs)
+			tree.add(new MyNode(i, 0, 0));
 
 		if (vs.isEmpty()) // 종료 조건
 			return route;
@@ -140,9 +144,10 @@ public class UndirectedListGraph {
 		for (Integer i : vs)
 			fList.add(heuristicsR(start, i, route)); // 각 정점별 평가함수
 		sb.append(fList + "\n\n");
+		tree.setValue(2, fList);
 
 		vsIndex = minHIndex(fList); // 평가함수가 작은 정점의 인덱스
-
+		tree.moveTemp(vsIndex);
 		return hill(start, vs.get(vsIndex), route);
 
 	}
@@ -151,6 +156,7 @@ public class UndirectedListGraph {
 	public String aStartSearch(int start) {
 		sb = new StringBuilder();
 		route = new LinkedList<>();
+		tree = new MyBTree(new MyNode(start, 0, 0));
 		LinkedList<Integer> resultList = aStar(start, start, route, 0);
 		resultList.add(start);
 
@@ -171,18 +177,25 @@ public class UndirectedListGraph {
 		vs.removeAll(route);
 		sb.append("vs " + vs + "\n"); // 앞으로 갈 정점
 
+		for (Integer i : vs)
+			tree.add(new MyNode(i, 0, 0));
+
 		if (vs.isEmpty()) // 종료 조건
 			return route;
 
 		ArrayList<Integer> fList = new ArrayList<Integer>();
 		int vsIndex = 0;
-
-		for (Integer i : vs)
-			fList.add(heuristicsR(start, i, route) + (g + getWeight(now, i))); // 평가함수(h* + g)
+		int index = 0;
+		for (Integer i : vs) {
+			int h = heuristicsR(start, i, route);
+			int gValue = (g + getWeight(now, i));
+			tree.setGHValue(index++, gValue, h);
+			fList.add(h + gValue); // 평가함수(h* + g)
+		}
 		sb.append(fList + "\n\n");
 
 		vsIndex = minHIndex(fList); // 평가함수 최소값인 정점의 인덱스
-
+		tree.moveTemp(vsIndex);
 		return aStar(start, vs.get(vsIndex), route, g + getWeight(now, vs.get(vsIndex)));
 
 	}

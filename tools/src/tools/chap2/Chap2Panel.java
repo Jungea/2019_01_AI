@@ -22,7 +22,7 @@ import tools.MainFrame;
 
 public class Chap2Panel extends JPanel {
 
-	static LineBorder lb = new LineBorder(Color.BLACK, 1);
+	static LineBorder lb = new LineBorder(Color.BLUE, 1);
 	static LineBorder whitelb = new LineBorder(Color.WHITE, 1);
 	JPanel tablePanel = new JPanel();
 	JTable table;

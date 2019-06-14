@@ -132,6 +132,8 @@ public class Main {
 		}
 
 	}
+	
+//	public static 
 
 	public static double floor(double d) {
 		return (int) (d * 100) / 100.0;
