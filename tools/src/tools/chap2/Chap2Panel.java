@@ -139,7 +139,7 @@ public class Chap2Panel extends JPanel {
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
 						check = checkRadio(radioButton);
-						mainFrame.changeRoom(new ResultIPanel(mf, check, header, context));
+						mainFrame.changeRoom(new ResultIPanel(mf, check, 0, null, header, context));
 					}
 				});
 

@@ -1,4 +1,4 @@
-package tools.chap1;
+package tools;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,17 +10,17 @@ public class MyNode {
 	MyNode parent; // 부모 노드에 대한 참조
 	List<MyNode> child; // 자식 노드에 대한 참조
 
-	MyNode() {
+	public MyNode() {
 	}
 
-	MyNode(int v1) {
+	public MyNode(int v1) {
 		count = 1;
 		data = new int[count];
 		child = new ArrayList<MyNode>();
 		data[0] = v1;
 	}
 
-	MyNode(int v1, int v2) {
+	public MyNode(int v1, int v2) {
 		count = 2;
 		data = new int[count];
 		child = new ArrayList<MyNode>();
@@ -28,7 +28,7 @@ public class MyNode {
 		data[1] = v2;
 	}
 
-	MyNode(int v1, int v2, int v3) {
+	public MyNode(int v1, int v2, int v3) {
 		count = 3;
 		data = new int[count];
 		child = new ArrayList<MyNode>();

@@ -1,4 +1,4 @@
-package tools.chap1;
+package tools;
 
 import java.util.ArrayList;
 

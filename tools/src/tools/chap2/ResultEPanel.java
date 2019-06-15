@@ -27,12 +27,11 @@ import tools.IndexPanel;
 import tools.MainFrame;
 import tools.chap1.Chap1Panel;
 
-public class ResultIPanel extends JPanel {
+public class ResultEPanel extends JPanel {
 
-	LineBorder lb = new LineBorder(Color.BLUE, 1);
-	int index;
+	static LineBorder lb = new LineBorder(Color.BLUE, 1);
 
-	public ResultIPanel(MainFrame mainFrame, int I, int page, ID3 id3Object, String[] header, String[][] context) {
+	public ResultEPanel(MainFrame mainFrame, int I, int index, ID3 id3Object, String[] header, String[][] context) {
 		// TODO Auto-generated constructor stub
 
 		setLayout(null);
@@ -56,9 +55,7 @@ public class ResultIPanel extends JPanel {
 		add(home_img);
 
 		// title 이미지
-		JLabel iTitle_img = new JLabel(new ImageIcon("image/ICal.png"));
-//		iTitle_img.setBorder(lb);
-
+		JLabel iTitle_img = new JLabel(new ImageIcon("image/e_title.png"));
 		iTitle_img.setBounds(45, 50, 540, 86);
 		add(iTitle_img);
 
@@ -103,37 +100,36 @@ public class ResultIPanel extends JPanel {
 		tt.setFont(new Font("돋움", Font.BOLD, 20));
 		showPanel.add(tableSP);
 
-		index = page;
-		if (page == 0)
-			index = I;
-
 		// 풀이과정 레이블
 		JLabel processLabel = new JLabel("풀이 과정");
 		processLabel.setFont(new Font("돋움", Font.BOLD, 20));
-		processLabel.setBounds(20, 190, 100, 20);
+		processLabel.setBounds(20, 170, 100, 20);
 		showPanel.add(processLabel);
 
 		// 풀이과정 텍스트필드
 		JTextArea processTF = new JTextArea();
 		JScrollPane sp1 = new JScrollPane(processTF);
 		sp1.setBorder(lb);
-		processTF.append("I(" + id3.header[index] + ") = " + id3.getProcess(index));
+		processTF.append("E(" + id3.header[index] + ") = " + id3.getProcess(index) + "\n\n");
+		processTF.append("E(" + id3.header[index] + ") =  " + id3.getResultValue(index) + "\n\n");
+		processTF
+				.append("Gain(" + id3.header[index] + ") =  " + id3.getResultValue(index) + " - " + id3.getGain(index));
 		processTF.setFont(new Font("돋움", Font.BOLD, 20));
 		showPanel.add(sp1);
-		sp1.setBounds(20, 220, 500, 70);
+		sp1.setBounds(20, 200, 500, 200);
 
-		// 결과 레이블
+		// 결과 Gain 레이블
 		JLabel resultLabel = new JLabel("결과");
 		resultLabel.setFont(new Font("돋움", Font.BOLD, 20));
-		resultLabel.setBounds(20, 330, 100, 20);
+		resultLabel.setBounds(20, 420, 100, 20);
 		showPanel.add(resultLabel);
 
-		// 결과 텍스트 필드
+		// 결과 Gain 텍스트 필드
 		JTextArea resultTF = new JTextArea();
 		resultTF.setBorder(lb);
-		resultTF.append("I(" + id3.header[index] + ") =  " + id3.getResultValue(index));
+		resultTF.append("Gain(" + id3.header[index] + ") =  " + id3.getGain(index) + "\n\n");
 		resultTF.setFont(new Font("돋움", Font.BOLD, 20));
-		resultTF.setBounds(20, 360, 500, 50);
+		resultTF.setBounds(20, 450, 500, 50);
 		showPanel.add(resultTF);
 
 		// 의사결정 트리로 이동하는 버튼
@@ -152,6 +148,26 @@ public class ResultIPanel extends JPanel {
 			}
 		});
 
+		// 이전 ID3 계산 패널로 이동하는 버튼
+		if (index > 0) {
+			JButton preButton = new JButton("<");
+			preButton.setBounds(450, 710, 59, 59);
+			preButton.setFocusPainted(false);
+			add(preButton);
+			preButton.addActionListener(new ActionListener() {
+				MainFrame mf = mainFrame;
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					if (index - 1 == 0)
+						mainFrame.changeRoom(new ResultIPanel(mf, I, index - 1, id3, null, null));
+					else
+						mainFrame.changeRoom(new ResultEPanel(mf, I, index - 1, id3, null, null));
+				}
+			});
+		}
+		// 다음 ID3 계산 패널로 이동하는 버튼 3 length 5
 		JButton postButton = new JButton(">");
 		postButton.setBounds(525, 710, 59, 59);
 		postButton.setFocusPainted(false);
@@ -162,7 +178,14 @@ public class ResultIPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				mainFrame.changeRoom(new ResultEPanel(mf, I, page + 1, id3, null, null));
+				if (index + 1 == I && (I == id3.header.length - 1)) // 다음게 I인데 I가 마지막
+					mainFrame.changeRoom(new DecisionTree(mf, id3));
+				else if (index == id3.header.length - 1)
+					mainFrame.changeRoom(new DecisionTree(mf, id3));
+				else if (index + 1 == I) // 다음게 I
+					mainFrame.changeRoom(new ResultEPanel(mf, I, index + 2, id3, null, null));
+				else
+					mainFrame.changeRoom(new ResultEPanel(mf, I, index + 1, id3, null, null));
 			}
 		});
 	}
