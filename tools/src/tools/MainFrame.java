@@ -63,8 +63,6 @@ public class MainFrame extends JFrame {
 
 		background.add("East", nextButton);
 
-		changeRoom(new Chap2Panel(this));
-
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		setVisible(true);

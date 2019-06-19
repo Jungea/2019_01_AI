@@ -3,7 +3,7 @@ package tools.chap3;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-public class Perceptron {
+public class perceptron {
 	public static ArrayList<String> array = new ArrayList<>();
 	public static int opt;
 	static int[][] x = new int[][] { { 0, 0 }, { 0, 1 }, { 1, 0 }, { 1, 1 } };
@@ -45,9 +45,7 @@ public class Perceptron {
 				learn(f, list);
 
 				break;
-
 			}
-
 			System.out.println();
 		} while (opt != 4);
 
@@ -86,7 +84,6 @@ public class Perceptron {
 					w[1][0] = b[0].add(b[1]).doubleValue();
 				}
 				print(x[i], f[i], w, y, d);
-
 			}
 			System.out.println();
 		} while (count != 4);

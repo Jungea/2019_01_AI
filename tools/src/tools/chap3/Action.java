@@ -7,19 +7,10 @@ import javax.swing.JTextField;
 
 public class Action implements ActionListener{
 	int value = 0;
+	String[] s;
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-	}
-	
-	public void TrueEnabled(JTextField j)
-	{
-		j.setEnabled(true);
-	}
-	
-	public void FalseEnabled(JTextField j)
-	{
-		j.setEnabled(false);
 	}
 }

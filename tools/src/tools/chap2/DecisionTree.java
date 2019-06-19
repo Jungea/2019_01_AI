@@ -1,7 +1,6 @@
 package tools.chap2;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,14 +10,11 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
 
-import tools.BTreePanel;
 import tools.IndexPanel;
 import tools.MainFrame;
-import tools.chap1.Chap1Panel;
 
 public class DecisionTree extends JPanel {
 
@@ -71,7 +67,7 @@ public class DecisionTree extends JPanel {
 		sp1.setBorder(lb);
 		for (int i = 1; i < id3.gain.length; i++)
 			if (i != id3.id)
-				gainTF.append("I(" + id3.header[i] + ") = " + id3.getGain(i) + "\n");
+				gainTF.append("Gain(" + id3.header[i] + ") = " + id3.getGain(i) + "\n");
 		gainTF.setFont(new Font("돋움", Font.BOLD, 20));
 		sp1.setBounds(45, 170, 540, 100);
 		add(sp1);
@@ -84,34 +80,31 @@ public class DecisionTree extends JPanel {
 		showPanel.setBounds(45, 280, 540, 400);
 		add(showPanel);
 
-//		BTreePanel treePanel = new BTreePanel();
-//		JScrollPane treeSP = new JScrollPane(treePanel);
-//		treeSP.setBounds(50, 10, 450, 370);
-//		treePanel.setBackground(Color.WHITE);
-//		treeSP.setBorder(null);
-//		add(treeSP);
-//
-//
-////		treePanel.tree;
-//		treePanel.capture();
+		BTreePanel2 treePanel = new BTreePanel2();
+		JScrollPane treeSP = new JScrollPane(treePanel);
+		treeSP.setBounds(50, 10, 450, 370);
+		treePanel.setBackground(Color.WHITE);
+		// treePanel.setBorder(lb);
+		treeSP.setBorder(null);
+		showPanel.add(treeSP);
+
+		id3.mt();
+
+		treePanel.tree = id3.tree;
+
+		treePanel.capture();
 
 		// 이전 ID3 계산 패널로 이동하는 버튼
-		JButton preButton = new JButton("<");
-		preButton.setBounds(450, 710, 59, 59);
-		preButton.setFocusPainted(false);
-		add(preButton);
-		preButton.addActionListener(new ActionListener() {
-			MainFrame mf = mainFrame;
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				int index = id3.header.length - 1;
-				if (index == id3.id)
-					index -= 1;
-				mainFrame.changeRoom(new ResultEPanel(mf, id3.id, index, id3, null, null));
-			}
-		});
+		/*
+		 * JButton preButton = new JButton("<"); preButton.setBounds(450, 710, 59, 59);
+		 * preButton.setFocusPainted(false); add(preButton);
+		 * preButton.addActionListener(new ActionListener() { MainFrame mf = mainFrame;
+		 * 
+		 * @Override public void actionPerformed(ActionEvent e) { // TODO Auto-generated
+		 * method stub int index = id3.header.length - 1; if (index == id3.id) index -=
+		 * 1; mainFrame.changeRoom(new ResultEPanel(mf, id3.id, index, id3, null,
+		 * null)); } });
+		 */
 	}
 
 }

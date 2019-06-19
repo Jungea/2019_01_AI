@@ -1,4 +1,4 @@
-package tools;
+package tools.chap1;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,21 +13,24 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import tools.MyBTree;
+import tools.MyNode;
+
 @SuppressWarnings("serial")
-public class BTreePanel extends JPanel {
+public class BTreePanel1 extends JPanel {
 	static final int DATA_WIDTH = 21, LINK_WIDTH = 2, NODE_HEIGHT = 20, X_MARGIN = 3, LAYER_HEIGHT = 60;
 	static Font narrowFont = new Font(Font.SERIF, Font.PLAIN, 12), defaultFont;
-	public static MyBTree tree = new MyBTree(null);
+	public static MyBTree tree1 = new MyBTree(null);
 	String title;
 	ArrayList<BufferedImage> images = new ArrayList<>();
 	int index = -1;
 
-	public BTreePanel() {
+	public BTreePanel1() {
 	}
 
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(getSubTreeWidth(tree.root), 1024);
+		return new Dimension(getSubTreeWidth(tree1.root), 1024);
 	}
 
 	@Override
@@ -87,18 +90,18 @@ public class BTreePanel extends JPanel {
 	}
 
 	static int getHeight(MyNode node) {
-		return tree.height * LAYER_HEIGHT + 100;
+		return tree1.height * LAYER_HEIGHT + 100;
 	}
 
 	public void capture() {
-		BufferedImage image = new BufferedImage(getSubTreeWidth(tree.root) + 100, getHeight(tree.root) + 100,
+		BufferedImage image = new BufferedImage(getSubTreeWidth(tree1.root) + 100, getHeight(tree1.root) + 100,
 				BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = image.createGraphics();
 		super.paint(g);
 //		g.drawString("(" + (index + 2) + ")  " + title, 20, 20);
 		defaultFont = g.getFont();
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		drawNode(g, tree.root, X_MARGIN, X_MARGIN + 30);
+		drawNode(g, tree1.root, X_MARGIN, X_MARGIN + 30);
 		images.add(image);
 		index = images.size() - 1;
 		revalidate();

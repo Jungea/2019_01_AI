@@ -62,7 +62,7 @@ public class Chap2Panel extends JPanel {
 		chap2_img.setBounds(45, 50, 540, 57);
 		add(chap2_img);
 
-		/*-------------------------------------------------------------------------------------*/
+		/*
 		// 파일 열기 작동을 하는 패널
 		JPanel openPanel = new JPanel();
 		openPanel.setLayout(null);
@@ -83,7 +83,7 @@ public class Chap2Panel extends JPanel {
 
 		openPanel.setBounds(45, 140, 540, 130);
 		add(openPanel);
-
+		 */
 		/*-------------------------------------------------------------------------------------*/
 		// 실습 예제 양식을 채워주는 버튼
 		JButton ex_Button = new JButton("실습 예제");

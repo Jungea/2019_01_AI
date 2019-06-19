@@ -3,11 +3,15 @@ package tools.chap2;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+
+import tools.MyBTree;
+import tools.MyNode;
 
 public class ID3 {
 	int id = 0;
@@ -24,15 +28,24 @@ public class ID3 {
 	double[] resultValue;
 	String[] process;
 	double[] gain;
+	int[] gainNum;
+	String[][] copyContext;
+
+	MyBTree tree;
 
 	public ID3(int check, String[] header, String[][] context) {
 		id = check;
 		this.header = header;
 		this.context = context;
+		this.copyContext = new String[context.length][context[0].length];
+		for (int i = 0; i < context.length; i++)
+			System.arraycopy(context[i], 0, copyContext[i], 0, context[0].length);
+
 		totalSize = context.length;
 		resultValue = new double[header.length];
 		process = new String[header.length];
 		gain = new double[header.length];
+		gainNum = new int[header.length - 2];
 		ICalculator();
 		process[check] = sb.toString();
 		sb.setLength(0);
@@ -50,6 +63,127 @@ public class ID3 {
 			System.out.println(resultValue[i]);
 			System.out.println(gain[i]);
 			System.out.println();
+		}
+		gainDESC();
+	}
+
+	public void mt() {
+		tree = new MyBTree(new MyNode(header[gainNum[0]]));
+		makeTree(0);
+	}
+
+	public void makeTree(int num) {
+
+		String[][] cutEpTable = cutColTable(gainNum[num], copyContext);
+		System.out.println("******++++" + Arrays.deepToString(cutEpTable));
+
+		Set<String> eSet = new TreeSet<>();
+		for (int k = 0; k < context.length; k++) {
+			if (cutEpTable[k][0] != null) {
+				eSet.add(cutEpTable[k][0]);
+			}
+		}
+
+		String[] eArr = eSet.toArray(new String[0]);
+		System.out.println("++++" + Arrays.deepToString(eArr));
+		cutIdTable = cutColTable(id, copyContext); // 표 열단위로 자르기
+
+		String[][] idEpTable = joinTable(cutEpTable, cutIdTable); // I와 opt열만 있는 배열
+
+		int[][] count = new int[eArr.length][idKeyArr.length + 1]; // 표 생성
+		int colLast = count[0].length - 1; // 열 마지막 인덱스
+		int row;
+		int col;
+		for (int k = 0; k < idEpTable.length; k++) {
+			if (idEpTable[k][0] != null && idEpTable[k][1] != null) {
+				row = Arrays.binarySearch(eArr, idEpTable[k][0]);
+				col = Arrays.binarySearch(idKeyArr, idEpTable[k][1]);
+
+				count[row][col]++;
+				count[row][colLast]++;
+			}
+		}
+		System.out.println("******" + Arrays.deepToString(count));
+
+		for (int a = 0; a < count.length; a++) {
+			if (count[a] != null || count[a][count[a].length - 1] != 0) {
+				for (int b = 0; b < count[a].length - 1; b++) {
+					if (count[a][b] == count[a][count[a].length - 1]) {
+						System.out.println(idKeyArr[b] + "  ///////////");
+						tree.add(new MyNode(idKeyArr[b]));
+						removeRow(gainNum[num], eArr[a], idKeyArr[b]);
+
+						if (num + 1 < gainNum.length) {
+							System.out.println(header[gainNum[num + 1]]);
+							tree.add(new MyNode(header[gainNum[num + 1]]));
+							tree.moveTemp(1);
+							makeTree(num + 1);
+						}
+						break;
+					}
+				}
+			}
+		}
+
+	}
+
+	public void removeRow(int opt, String row, String col) {
+		System.out.println(opt + "   " + row + "   " + col);
+
+		for (int i = 0; i < copyContext.length; i++) {
+			if (copyContext[i][opt] == null)
+				continue;
+			if (copyContext[i][opt].equals(row) && copyContext[i][id].equals(col))
+				setNull(i);
+		}
+		System.out.println("******" + Arrays.deepToString(copyContext));
+		System.out.println("@@@@@@@@@@@@@" + Arrays.deepToString(context));
+	}
+
+	public void setNull(int i) {
+		for (int j = 0; j < copyContext[0].length; j++)
+			copyContext[i][j] = null;
+	}
+
+	public void gainDESC() {
+		double[] tempGain = Arrays.copyOf(gain, gain.length);
+		selectionSort(tempGain);
+		for (int i = 0; i < tempGain.length - 2; i++) {
+			for (int j = 0; j < gain.length; j++) {
+				if (tempGain[i] == gain[j]) {
+					gainNum[i] = j;
+					break;
+				}
+			}
+		}
+		System.out.println(Arrays.toString(gainNum));
+
+	}
+
+	// 배열 a에서 i 위치와 j 위치의 값을 서로 바꾼다
+	static void swap(double[] a, int i, int j) {
+		double temp = a[i];
+		a[i] = a[j];
+		a[j] = temp;
+
+	}
+
+	// 배열 a의 start 위치부터 끝까지에서 가장 작은 값의 위치(index)를 리턴한다.
+	static int findMax(double[] a, int start) {
+		int index = start;
+		for (int i = start + 1; i < a.length; i++)
+			if (a[i] > a[index])
+				index = i;
+
+		return index;
+
+	}
+
+	// selection sort
+	static void selectionSort(double[] a) {
+		for (int i = 0; i < a.length - 1; ++i) {
+			int minIndex = findMax(a, i); // 배열 a의 i 위치부터 끝까지에서 가장 작은 값을 찾아서
+			swap(a, i, minIndex); // 그 값을 i 위치로 이동한다
 		}
 	}
 
@@ -88,7 +222,7 @@ public class ID3 {
 	}
 
 	public String[][] makeContext(int index) {
-		int[][] a = makeCount(index);
+		int[][] a = makeCount(index, context);
 		String[][] tableContext = new String[a.length + 1][a[0].length + 1];
 
 		String[][] cutEpTable = cutColTable(index, context);
@@ -115,15 +249,18 @@ public class ID3 {
 		return tableContext;
 	}
 
-	public int[][] makeCount(int index) {
+	public int[][] makeCount(int index, String[][] context) {
 		String[][] cutEpTable = cutColTable(index, context);
 
 		Set<String> eSet = new TreeSet<>();
+		System.out.println(Arrays.deepToString(cutEpTable));
 		for (int k = 0; k < context.length; k++)
 			eSet.add(cutEpTable[k][0]);
 
 		String[] eArr = eSet.toArray(new String[0]);
 
+		cutIdTable = cutColTable(id, context); // 표 열단위로 자르기
+		System.out.println("count" + Arrays.deepToString(cutIdTable));
 		String[][] idEpTable = joinTable(cutEpTable, cutIdTable); // I와 opt열만 있는 배열
 
 		int[][] count = new int[eArr.length][idKeyArr.length + 1]; // 표 생성
@@ -144,9 +281,9 @@ public class ID3 {
 
 	// E 계산
 	public void ECalculator(int opt) {
-		int[][] count = makeCount(opt);
+		int[][] count = makeCount(opt, context);
 		int colLast = count[0].length - 1; // 열 마지막 인덱스
-		System.out.println("count" + Arrays.deepToString(count));
+	
 
 //		double sum = 0.0;
 		BigDecimal[] big = new BigDecimal[3];
@@ -199,7 +336,8 @@ public class ID3 {
 		String[][] table = new String[context.length][1];
 
 		for (int i = 0; i < context.length; i++)
-			table[i][0] = context[i][col];
+			if (context[i] != null)
+				table[i][0] = context[i][col];
 
 		return table;
 	}

@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.LineBorder;
 
-import tools.BTreePanel;
 import tools.IndexPanel;
 import tools.MainFrame;
 
@@ -62,7 +61,7 @@ public class SearchPanel extends JPanel {
 		solvingPanel.setBounds(45, 160, 540, 450);
 		add(solvingPanel);
 
-		BTreePanel treePanel = new BTreePanel();
+		BTreePanel1 treePanel = new BTreePanel1();
 		JScrollPane treeSP = new JScrollPane(treePanel);
 		treeSP.setBounds(50, 10, 450, 370);
 		treePanel.setBackground(Color.WHITE);
@@ -75,7 +74,7 @@ public class SearchPanel extends JPanel {
 		else
 			searchResult = graph.aStartSearch(rz, start);
 
-		treePanel.tree = graph.tree;
+		treePanel.tree1 = graph.tree;
 		treePanel.capture();
 
 		JLabel resultLabel = new JLabel(searchResult);

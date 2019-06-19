@@ -92,6 +92,7 @@ public class ResultEPanel extends JPanel {
 			tableHeader[i] = id3.idKeyArr[i - 1];
 		tableHeader[tableHeader.length - 1] = "합계";
 
+		System.out.println("index" + index);
 		String[][] tableContext = id3.makeContext(index);
 
 		JTable tt = new JTable(tableContext, tableHeader);

@@ -1,9 +1,11 @@
 package tools.chap3;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -13,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
 
 import tools.IndexPanel;
 import tools.MainFrame;
@@ -47,26 +50,82 @@ public class Chap3Panel extends JPanel {
 		chap3_img.setFocusPainted(false);
 		chap3_img.setBounds(45, 50, 540, 57);
 		add(chap3_img);
-		// -----------------------------------------------------------
-		JRadioButton r1 = new JRadioButton("AND");
-		JRadioButton r2 = new JRadioButton("OR");
-		JRadioButton r3 = new JRadioButton("NAND");
+		// -----------------------------------------------------------위에까지 은애가 한 것.
+
+		int i = 0;
+
+		// ※ 라디오 버튼 생성, 그룹화, and를 초기값 설정, 위치 초기화, 패널 추가------------------------
+		JRadioButton[] r = new JRadioButton[3];
+		r[0] = new JRadioButton("AND");
+		r[1] = new JRadioButton("OR");
+		r[2] = new JRadioButton("NAND");
 
 		ButtonGroup group = new ButtonGroup();
-		group.add(r1);
-		group.add(r2);
-		group.add(r3);
-		r1.setSelected(true);
 
-		// 임시로 사진 위치와 크기 확인용
-		JButton img = new JButton("사진 위치와 크기");
-		img.setBounds(55, 350, 530, 300);
-		add(img);
+		for (i = 0; i < r.length; i++)
+			group.add(r[i]);
 
-		JButton start = new JButton("학습 시작");
-		JButton pre = new JButton("◀");
-		JButton next = new JButton("▶");
-		JButton reset = new JButton("초기화");
+		i = 0;
+		for (int x = 155; i < r.length; i++) {
+			r[i].setBounds(x, 130, 100, 50);
+			r[i].setBackground(Color.white);
+			r[i].setFont(new Font("굴림", Font.BOLD, 20));
+			x += 105;
+			add(r[i]);
+		}
+
+		r[0].setSelected(true);
+
+		// ※ 새 패널에 이미지 넣고 z-order값 조절해서 이미지 위에 글씨 표시
+		ImageIcon picture = new ImageIcon("image/picture.png");
+		JLabel img = new JLabel(picture);
+
+		JPanel imgPanel = new JPanel();
+		imgPanel.setBounds(55, 335, 530, 300);
+		imgPanel.setBackground(Color.white);
+		imgPanel.add(img);
+
+		add(imgPanel);
+
+		JLabel[] pictureText = new JLabel[6];
+
+		i = 0;
+		for (; i < pictureText.length; i++) {
+			pictureText[i] = new JLabel("");
+			pictureText[i].setFont(new Font("Dialog", Font.BOLD, 20));
+			pictureText[i].setSize(70, 30);
+			setComponentZOrder(pictureText[i], i);
+			add(pictureText[i]);
+		}
+
+		pictureText[0].setHorizontalAlignment(JLabel.LEFT);
+		pictureText[1].setHorizontalAlignment(JLabel.LEFT);
+		pictureText[2].setHorizontalAlignment(JLabel.CENTER);
+		pictureText[3].setHorizontalAlignment(JLabel.CENTER);
+		pictureText[4].setHorizontalAlignment(JLabel.LEFT);
+		pictureText[5].setHorizontalAlignment(JLabel.LEFT);
+
+		pictureText[0].setLocation(127, 365);
+		pictureText[1].setLocation(127, 595);
+		pictureText[2].setLocation(235, 390);
+		pictureText[3].setLocation(235, 570);
+		pictureText[4].setLocation(352, 479);
+		pictureText[5].setLocation(450, 460);
+
+		i = 0;
+		for (; i < pictureText.length; i++)
+			setComponentZOrder(pictureText[i], i);
+		setComponentZOrder(imgPanel, 6);
+
+		// ※ 버튼 생성과 위치 초기화, 패널에 추가------------------------------------------------
+		ImageIcon start_p = new ImageIcon("image/C3_start.png");
+		ImageIcon reset_p = new ImageIcon("image/C3_reset.png");
+		ImageIcon left_p = new ImageIcon("image/left.png");
+		ImageIcon right_p = new ImageIcon("image/right.png");
+		JButton start = new JButton(start_p);
+		JButton pre = new JButton(left_p);
+		JButton next = new JButton(right_p);
+		JButton reset = new JButton(reset_p);
 
 		start.setBounds(55, 680, 150, 50);
 		pre.setBounds(480, 680, 50, 50);
@@ -78,109 +137,125 @@ public class Chap3Panel extends JPanel {
 		add(next);
 		add(reset);
 
-		JLabel l1 = new JLabel("w1");
-		JLabel l2 = new JLabel("w2");
-		JLabel l3 = new JLabel("θ");
-		JLabel l4 = new JLabel("a");
-		JLabel step = new JLabel("step");
-		step.setBounds(55, 320, 50, 30);
+		// ※ 라벨 선언과 초기화 ------------------------------------------------------------
+		JLabel[] text = new JLabel[4];
+
+		text[0] = new JLabel("w1");
+		text[1] = new JLabel("w2");
+		text[2] = new JLabel("θ");
+		text[3] = new JLabel("a");
+
+		i = 0;
+		for (int x = 90; i < text.length; i++) {
+			text[i].setBounds(x, 220, 30, 20);
+			text[i].setHorizontalAlignment(JLabel.CENTER);
+			text[i].setFont(new Font("Dialog", Font.BOLD, 17));
+			x += 115;
+		}
+
+		for (i = 0; i < text.length; i++)
+			add(text[i]);
+
+		// ※ step 글자 표시 ------------------------------------------------------------
+		JLabel step = new JLabel("Step");
+		step.setFont(new Font("Dialog", Font.BOLD, 20));
+		step.setBounds(55, 310, 100, 30);
 		add(step);
 
-		JTextField j1 = new JTextField();
-		JTextField j2 = new JTextField();
-		JTextField j3 = new JTextField();
-		JTextField j4 = new JTextField();
+		// ※ 텍스트 필드 배열 선언, 위치 초기화, 추가--------------------------------------------
+		JTextField[] input = new JTextField[4];
 
-		r1.setBounds(155, 130, 100, 50);
-		r2.setBounds(260, 130, 100, 50);
-		r3.setBounds(365, 130, 100, 50);
-		add(r1);
-		add(r2);
-		add(r3);
+		i = 0;
+		for (int x = 120; i < input.length; i++) {
+			input[i] = new JTextField();
+			input[i].setBounds(x, 210, 80, 40);
+			x += 115;
+			add(input[i]);
+		}
 
-		l1.setBounds(90, 220, 20, 20);
-		l1.setHorizontalAlignment(JLabel.CENTER);
-		l2.setBounds(205, 220, 20, 20);
-		l2.setHorizontalAlignment(JLabel.CENTER);
-		l3.setBounds(320, 220, 20, 20);
-		l3.setHorizontalAlignment(JLabel.CENTER);
-		l4.setBounds(435, 220, 20, 20);
-		l4.setHorizontalAlignment(JLabel.CENTER);
+		ArrayList<String> list = new ArrayList<>(); // 퍼셉트론 출력 결과값을 저장할 배열
 
-		j1.setBounds(120, 210, 80, 40);
-		j2.setBounds(235, 210, 80, 40);
-		j3.setBounds(350, 210, 80, 40);
-		j4.setBounds(455, 210, 80, 40);
+		// 출력 결과값 텍스트 표시 ----------------------------------------------------------
+//		JLabel index = new JLabel("X1 X2 F   W1   W2  Y  d  W1   W2\n");
+//		index.setBounds(210, 260, 200, 30);
+//		index.setHorizontalAlignment(JLabel.CENTER);
+//		add(index);
 
-		add(l1);
-		add(l2);
-		add(l3);
-		add(l4);
+//		JLabel value = new JLabel();
+//		value.setBounds(210, 290, 200, 30);
+//		value.setHorizontalAlignment(JLabel.CENTER);
+//		add(value);
 
-		add(j1);
-		add(j2);
-		add(j3);
-		add(j4);
+		// 각 버튼들의 actionListener ----------------------------------------------------
+		Action action = new Action(); // 버튼들의 actionListener 객체
 
-		ArrayList<String> list = new ArrayList<>();
+		pre.setEnabled(false);
+		next.setEnabled(false);
 
-		JLabel index = new JLabel("X1 X2 F   W1   W2  Y  d  W1   W2\n");
-		index.setBounds(210, 260, 200, 30);
-		index.setHorizontalAlignment(JLabel.CENTER);
-		// index.setBorder(new LineBorder(Color.black,2));
-		add(index);
-
-		JLabel value = new JLabel();
-		value.setBounds(210, 290, 200, 30);
-		value.setHorizontalAlignment(JLabel.CENTER);
-		// value.setBorder(new LineBorder(Color.black,2));
-		add(value);
-
-		// -------------------------------------------위 소스 gui 추가용
-		Action action = new Action();
-
-		start.addActionListener(new ActionListener() {
+		start.addActionListener(new ActionListener() { // 시작 버튼 actionListener
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				if (!isStringDouble(j1.getText()) || !isStringDouble(j2.getText()) || !isStringDouble(j3.getText())
-						|| !isStringDouble(j4.getText())) {
+
+				// 값 입력 없을 때 에러 메시지 출력
+				if (!isStringDouble(input)) {
 					JOptionPane.showMessageDialog(null, "값을 다시 입력하세요.", "값 오류", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 
+				pre.setEnabled(true);
+				next.setEnabled(true);
+				reset.setEnabled(true);
+
+				step.setText("Step 1");
+
+				radioButtonFalse(r);
+
 				int a = 0;
-				if (r1.isSelected())
+
+				// 라디오 버튼 선택에 따라 and, or, nand 값 입력
+				if (r[0].isSelected())
 					a = 1;
-				else if (r2.isSelected())
+				else if (r[1].isSelected())
 					a = 2;
-				else if (r3.isSelected())
+				else if (r[2].isSelected())
 					a = 3;
-				double[] array = new double[4];
 
-				array[0] = Double.parseDouble(j1.getText());
-				array[1] = Double.parseDouble(j2.getText());
-				array[2] = Double.parseDouble(j3.getText());
-				array[3] = Double.parseDouble(j4.getText());
+				double[] array = new double[4]; // 입력창에 입력된 값들 저장
 
-				new Perceptron();
-				Perceptron.main(a, array);
+				for (int i = 0; i < array.length; i++)
+					array[i] = Double.parseDouble(input[i].getText());
 
-				if (Perceptron.array.size() >= 100) {
+				new perceptron();
+				perceptron.array.clear();
+				perceptron.main(a, array);
+
+				textFieldFalse(input);
+
+				pre.setEnabled(false);
+				start.setEnabled(false);
+
+				if (perceptron.array.size() >= 100) {
+					textFieldFalse(input);
+
 					pre.setEnabled(false);
 					next.setEnabled(false);
-					j1.setEnabled(false);
-					j2.setEnabled(false);
-					j3.setEnabled(false);
-					j4.setEnabled(false);
-					start.setEnabled(false);
-					r1.setEnabled(false);
-					r2.setEnabled(false);
-					r3.setEnabled(false);
+
+					radioButtonFalse(r);
+
 					JOptionPane.showMessageDialog(null, "학습에 실패하였습니다.", "오류", JOptionPane.ERROR_MESSAGE);
 				} else {
-					list.addAll(Perceptron.array);
-					value.setText(Perceptron.array.get(0));
+					pictureText[4].setText(input[2].getText().trim());
+					list.addAll(perceptron.array);
+					// value.setText(perceptron.array.get(0));
+
+					action.s = list.get(0).split("   ");
+
+					pictureText[0].setText(action.s[0]);
+					pictureText[1].setText(action.s[1]);
+					pictureText[2].setText(action.s[3]);
+					pictureText[3].setText(action.s[4]);
+					pictureText[5].setText(action.s[5]);
 				}
 			}
 		});
@@ -188,90 +263,107 @@ public class Chap3Panel extends JPanel {
 		pre.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (list.isEmpty()) {
-					JOptionPane.showMessageDialog(null, "학습 시작 버튼을 눌러주세요.", "오류", JOptionPane.ERROR_MESSAGE);
-					return;
-				}
+				// value.setText(list.get(--action.value)); // 현재 값 이전 위치의 값을 저장.
+				--action.value;
 
-				value.setText(list.get(--action.value)); // 현재 값 이전 위치의 값을 저장.
 				if (action.value == 0)
 					pre.setEnabled(false);
-
-				action.FalseEnabled(j1);
-				action.FalseEnabled(j2);
-				action.FalseEnabled(j3);
-				action.FalseEnabled(j4);
 
 				if (action.value < list.size() - 1)
 					next.setEnabled(true);
 
-				if (action.value % 4 == 0) {
-					int a = action.value / 4 + 1;
-					step.setText("step " + a);
-				}
+				action.s = list.get(action.value).split("   ");
+
+				pictureText[0].setText(action.s[0]);
+				pictureText[1].setText(action.s[1]);
+				pictureText[2].setText(action.s[3]);
+				pictureText[3].setText(action.s[4]);
+				pictureText[5].setText(action.s[5]);
+
+				step.setText("Step " + Integer.toString(action.value / 4 + 1));
 			}
 		});
 
 		next.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (list.isEmpty()) {
-					JOptionPane.showMessageDialog(null, "학습 시작 버튼을 눌러주세요.", "오류", JOptionPane.ERROR_MESSAGE);
-					return;
-				}
+				// value.setText(list.get(++action.value)); // 현재 값 다음 위치의 값 저장.
+				++action.value;
 
-				value.setText(list.get(++action.value)); // 현재 값 다음 위치의 값 저장.
 				if (action.value == list.size() - 1)
 					next.setEnabled(false);
-
-				action.FalseEnabled(j1);
-				action.FalseEnabled(j2);
-				action.FalseEnabled(j3);
-				action.FalseEnabled(j4);
 
 				if (action.value > 0)
 					pre.setEnabled(true);
 
-				if (action.value % 4 == 0) {
-					int a = action.value / 4 + 1;
-					step.setText("step " + a);
-				}
+				action.s = list.get(action.value).split("   ");
+
+				pictureText[0].setText(action.s[0]);
+				pictureText[1].setText(action.s[1]);
+				pictureText[2].setText(action.s[3]);
+				pictureText[3].setText(action.s[4]);
+				pictureText[5].setText(action.s[5]);
+
+				step.setText("Step " + Integer.toString(action.value / 4 + 1));
 			}
 		});
 
-		reset.addActionListener(new ActionListener() {
+		reset.addActionListener(new ActionListener() { // 초기화 버튼 - 모든 입력창과 버튼 초기화(사용 가능), 값 표시할 배열과 라벨 초기화
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				j1.setEnabled(true);
-				action.TrueEnabled(j1);
-				action.TrueEnabled(j2);
-				action.TrueEnabled(j3);
-				action.TrueEnabled(j4);
+				textFieldTrue(input);
 
-				j1.setText("");
-				j2.setText("");
-				j3.setText("");
-				j4.setText("");
-				r1.setSelected(true);
+				for (int i = 0; i < input.length; i++)
+					input[i].setText("");
+
+				r[0].setSelected(true);
+
 				list.clear();
-				value.setText("");
+
+				// value.setText("");
+
 				action.value = 0;
-				pre.setEnabled(true);
-				next.setEnabled(true);
+
+				pre.setEnabled(false);
+				next.setEnabled(false);
 				start.setEnabled(true);
-				r1.setEnabled(true);
-				r2.setEnabled(true);
-				r3.setEnabled(true);
+				step.setText("Step");
+
+				for (int j = 0; j < pictureText.length; j++)
+					pictureText[j].setText("");
+
+				radioButtonTrue(r);
 			}
 		});
 	}
 
-	public static boolean isStringDouble(String s) { // 받은 문자열이 정수나 실수로 변환 가능한지 여부
+	public static boolean isStringDouble(JTextField[] t) { // 입력창의 값이 double형이 맞는지 확인
 		try {
-			Double.parseDouble(s);
-			return true;
+			for (int i = 0; i < t.length; i++)
+				Double.parseDouble(t[i].getText());
 		} catch (NumberFormatException e) {
 			return false;
 		}
+		return true;
+	}
+
+	public static void textFieldTrue(JTextField[] j1) { // textfield 전부 입력 가능
+		for (int i = 0; i < j1.length; i++)
+			j1[i].setEnabled(true);
+	}
+
+	public static void textFieldFalse(JTextField[] j2) { // textfield 전부 입력 불가능
+		for (int i = 0; i < j2.length; i++)
+			j2[i].setEnabled(false);
+	}
+
+	public static void radioButtonTrue(JRadioButton[] r1) { // radiobutton 전부 사용 가능
+		for (int i = 0; i < r1.length; i++)
+			r1[i].setEnabled(true);
+	}
+
+	public static void radioButtonFalse(JRadioButton[] r2) { // radiobutton 전부 사용 불가능
+		for (int i = 0; i < r2.length; i++)
+			r2[i].setEnabled(false);
 	}
 }

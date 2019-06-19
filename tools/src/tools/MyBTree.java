@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class MyBTree {
 	public MyNode root = new MyNode();
 	MyNode temp;
-	int height;
+	public int height;
 
 	public MyBTree(MyNode n) {
 		root = n;

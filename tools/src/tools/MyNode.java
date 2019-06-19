@@ -5,10 +5,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MyNode {
-	int count;
-	int[] data; // 데이터 목록
-	MyNode parent; // 부모 노드에 대한 참조
-	List<MyNode> child; // 자식 노드에 대한 참조
+	public int count;
+	public int[] data; // 데이터 목록
+	public String[] sData;
+	public MyNode parent; // 부모 노드에 대한 참조
+	public List<MyNode> child; // 자식 노드에 대한 참조
 
 	public MyNode() {
 	}
@@ -37,12 +38,20 @@ public class MyNode {
 		data[2] = v3;
 	}
 
-	boolean isLeaf() {
+	public MyNode(String s) {
+		count = 1;
+		this.sData = new String[count];
+		child = new ArrayList<MyNode>();
+		this.sData[0] = s;
+		// this.sData[1] = "";
+	}
+
+	public boolean isLeaf() {
 		return this.child.size() == 0;
 	}
 
 	@Override
 	public String toString() {
-		return "[data=" + Arrays.toString(data) + "]";
+		return "[data=" + Arrays.toString(sData) + "]";
 	}
 }
