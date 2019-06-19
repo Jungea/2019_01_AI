@@ -12,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.border.LineBorder;
 
 import tools.BTreePanel;
 import tools.IndexPanel;
@@ -19,6 +21,9 @@ import tools.MainFrame;
 import tools.chap1.Chap1Panel;
 
 public class DecisionTree extends JPanel {
+
+	static LineBorder lb = new LineBorder(Color.BLUE, 1);
+
 	public DecisionTree(MainFrame mainFrame, ID3 id3) {
 		setLayout(null);
 		setBackground(Color.WHITE);
@@ -60,12 +65,23 @@ public class DecisionTree extends JPanel {
 			}
 		});
 
+		// Gain 패널
+		JTextArea gainTF = new JTextArea();
+		JScrollPane sp1 = new JScrollPane(gainTF);
+		sp1.setBorder(lb);
+		for (int i = 1; i < id3.gain.length; i++)
+			if (i != id3.id)
+				gainTF.append("I(" + id3.header[i] + ") = " + id3.getGain(i) + "\n");
+		gainTF.setFont(new Font("돋움", Font.BOLD, 20));
+		sp1.setBounds(45, 170, 540, 100);
+		add(sp1);
+
 		// id3 계산 결과 모음 패널
 		JPanel showPanel = new JPanel();
 		showPanel.setLayout(null);
 		showPanel.setBackground(Color.WHITE);
-//		showPanel.setBorder(lb);
-		showPanel.setBounds(45, 170, 540, 530);
+		showPanel.setBorder(lb);
+		showPanel.setBounds(45, 280, 540, 400);
 		add(showPanel);
 
 //		BTreePanel treePanel = new BTreePanel();
@@ -97,4 +113,5 @@ public class DecisionTree extends JPanel {
 			}
 		});
 	}
+
 }

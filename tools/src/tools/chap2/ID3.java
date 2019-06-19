@@ -64,7 +64,7 @@ public class ID3 {
 	public double getGain(int index) {
 		return gain[index];
 	}
-	
+
 	public int minValueIndex() {
 		return 0;
 	}
@@ -73,7 +73,7 @@ public class ID3 {
 	public void ICalculator() {
 		cutIdTable = cutColTable(id, context); // 표 열단위로 자르기
 		idMap = new TreeMap<>(); // context value 집합
-		for (int k = 0; k < cutIdTable.length; k++) {
+		for (int k = 0; k < cutIdTable.length; k++) { // Map 만들기
 			Integer i = idMap.get(cutIdTable[k][0]);
 			if (i == null)
 				i = 0;
@@ -84,18 +84,45 @@ public class ID3 {
 		System.out.println("I(" + header[id] + ") = " + resultValue[id]);
 		System.out.println();
 		idKeyArr = idMap.keySet().toArray(new String[0]); // I 집합->배열
+
 	}
 
-	// E 계산
-	public void ECalculator(int opt) {
+	public String[][] makeContext(int index) {
+		int[][] a = makeCount(index);
+		String[][] tableContext = new String[a.length + 1][a[0].length + 1];
 
-		// opt열을 집합으로
-		String[][] cutEpTable = cutColTable(opt, context);
+		String[][] cutEpTable = cutColTable(index, context);
+
 		Set<String> eSet = new TreeSet<>();
 		for (int k = 0; k < context.length; k++)
 			eSet.add(cutEpTable[k][0]);
 
-		String[] eArr = eSet.toArray(new String[0]); // 집합 -> 배열
+		String[] eArr = eSet.toArray(new String[0]);
+
+		int i = 0;
+		for (; i < a.length; i++) {
+			tableContext[i][0] = eArr[i];
+			for (int j = 0; j < a[i].length; j++) {
+				tableContext[i][j + 1] = String.valueOf(a[i][j]);
+			}
+		}
+		tableContext[i][0] = "합계";
+		for (int j = 0; j < idValueArr.length; j++)
+			tableContext[i][j + 1] = String.valueOf(idValueArr[j]);
+
+		System.out.println("idEpTable " + Arrays.deepToString(tableContext));
+
+		return tableContext;
+	}
+
+	public int[][] makeCount(int index) {
+		String[][] cutEpTable = cutColTable(index, context);
+
+		Set<String> eSet = new TreeSet<>();
+		for (int k = 0; k < context.length; k++)
+			eSet.add(cutEpTable[k][0]);
+
+		String[] eArr = eSet.toArray(new String[0]);
 
 		String[][] idEpTable = joinTable(cutEpTable, cutIdTable); // I와 opt열만 있는 배열
 
@@ -111,7 +138,15 @@ public class ID3 {
 			count[row][col]++;
 			count[row][colLast]++;
 		}
-		// System.out.println("count" + Arrays.deepToString(count));
+
+		return count;
+	}
+
+	// E 계산
+	public void ECalculator(int opt) {
+		int[][] count = makeCount(opt);
+		int colLast = count[0].length - 1; // 열 마지막 인덱스
+		System.out.println("count" + Arrays.deepToString(count));
 
 //		double sum = 0.0;
 		BigDecimal[] big = new BigDecimal[3];

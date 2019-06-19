@@ -88,16 +88,25 @@ public class ResultIPanel extends JPanel {
 		// ID3 객체
 		ID3 id3 = id3Object == null ? new ID3(I, header, context) : id3Object;
 
-		// 테이블
-		Integer[] b = (Integer[]) id3.idMap.values().toArray(new Integer[id3.idMap.values().size()]);
-		Integer[][] bb = new Integer[1][b.length];
-		bb[0] = b;
-		String[] a = (String[]) id3.idMap.keySet().toArray(new String[id3.idMap.keySet().size()]);
 
-		JTable tt = new JTable(bb, a);
+		// 테이블
+		String[][] tableContext = new String[1][id3.idValueArr.length];
+		for (int i = 0; i < tableContext[0].length; i++)
+			tableContext[0][i] = String.valueOf(id3.idValueArr[i]);
+
+		int i = 0;
+		String[] tableHeader = new String[id3.idKeyArr.length + 1];
+		for (; i < tableHeader.length-1; ++i)
+			tableHeader[i] = id3.idKeyArr[i];
+		tableHeader[tableHeader.length - 1] = "합계";
+
+		System.out.println(Arrays.toString(tableHeader)+" ///"+Arrays.deepToString(tableContext));
+
+		
+		JTable tt = new JTable(tableContext, tableHeader);
 		JScrollPane tableSP = new JScrollPane(tt, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		tableSP.setBounds(20, 50, 300, 60);
+		tableSP.setBounds(20, 50, 100 * tableHeader.length, 60);
 		tt.setRowHeight(30);
 		tt.getTableHeader().setPreferredSize(new Dimension(30, 30));
 		tt.setFont(new Font("돋움", Font.BOLD, 20));

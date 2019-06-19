@@ -86,15 +86,18 @@ public class ResultEPanel extends JPanel {
 		ID3 id3 = id3Object == null ? new ID3(I, header, context) : id3Object;
 
 		// 테이블
-		Integer[] b = (Integer[]) id3.idMap.values().toArray(new Integer[id3.idMap.values().size()]);
-		Integer[][] bb = new Integer[1][b.length];
-		bb[0] = b;
-		String[] a = (String[]) id3.idMap.keySet().toArray(new String[id3.idMap.keySet().size()]);
+		String[] tableHeader = new String[id3.idKeyArr.length + 2];
+		tableHeader[0] = " ";
+		for (int i = 1; i < tableHeader.length - 1; ++i)
+			tableHeader[i] = id3.idKeyArr[i - 1];
+		tableHeader[tableHeader.length - 1] = "합계";
 
-		JTable tt = new JTable(bb, a);
+		String[][] tableContext = id3.makeContext(index);
+
+		JTable tt = new JTable(tableContext, tableHeader);
 		JScrollPane tableSP = new JScrollPane(tt, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		tableSP.setBounds(20, 50, 300, 60);
+		tableSP.setBounds(20, 20, 100 * tableHeader.length, (tableContext.length + 1) * 30);
 		tt.setRowHeight(30);
 		tt.getTableHeader().setPreferredSize(new Dimension(30, 30));
 		tt.setFont(new Font("돋움", Font.BOLD, 20));
